@@ -26,14 +26,6 @@ Run the bot using the latest included .jar file in releases or compile the jar y
 
 Spotify support uses [Spotify Tokener](https://github.com/topi314/spotify-tokener) for Spotify's anonymous/account web tokens.
 
-Start the tokener service:
-
-```bash
-docker compose up -d spotify-tokener
-```
-
-Then set these values in `.env`:
-
 ```dotenv
 SPOTIFYCLIENTID=your_spotify_client_id
 SPOTIFYCLIENTSECRET=your_spotify_client_secret
