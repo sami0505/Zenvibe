@@ -15,6 +15,7 @@ import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import dev.lavalink.youtube.YoutubeAudioSourceManager;
+import dev.lavalink.youtube.YoutubeSourceOptions;
 import dev.lavalink.youtube.clients.*;
 import dev.lavalink.youtube.clients.skeleton.Client;
 import io.github.cdimascio.dotenv.Dotenv;
@@ -66,6 +67,7 @@ public class PlayerManager {
     public PlayerManager() {
         this.musicManagers = new HashMap<>();
         this.audioPlayerManager = new DefaultAudioPlayerManager();
+        Dotenv dotenv = loadEnvironment();
 
         Client[] youtubeClients = new Client[]{
                 new MusicWithThumbnail(),
@@ -74,11 +76,18 @@ public class PlayerManager {
                 new WebWithThumbnail(),
                 new WebEmbeddedWithThumbnail()
         };
-        YoutubeAudioSourceManager youtubeAudioSourceManager = new YoutubeAudioSourceManager(true, youtubeClients);
+        YoutubeSourceOptions youtubeOptions = new YoutubeSourceOptions().setAllowSearch(true);
+        String remoteCipherUrl = getOptionalEnv(dotenv, "YTCIPHERSERVERURL", "http://127.0.0.1:8001");
+        if (!isBlank(remoteCipherUrl)) {
+            String remoteCipherPassword = getOptionalEnv(dotenv, "YTCIPHERSERVERPASSWORD", "");
+            String remoteCipherUserAgent = getOptionalEnv(dotenv, "YTCIPHERSERVERUSERAGENT", "Zenvibe");
+            youtubeOptions.setRemoteCipher(remoteCipherUrl, remoteCipherPassword, remoteCipherUserAgent);
+            System.out.println("YouTube remote cipher server enabled: " + remoteCipherUrl);
+        }
+        YoutubeAudioSourceManager youtubeAudioSourceManager = new YoutubeAudioSourceManager(youtubeOptions, youtubeClients);
         youtubeAudioSourceManager.useOauth2(ytRefreshToken, false);
         this.audioPlayerManager.registerSourceManager(youtubeAudioSourceManager);
 
-        Dotenv dotenv = loadEnvironment();
         String spotifyClientID = getEnvironmentValue(dotenv, "SPOTIFYCLIENTID");
         String spotifyClientSecret = getEnvironmentValue(dotenv, "SPOTIFYCLIENTSECRET");
         String spotifyTokenerEndpoint = getEnvironmentValue(dotenv, "SPOTIFYTOKENERENDPOINT");
