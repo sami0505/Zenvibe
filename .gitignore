@@ -12,7 +12,6 @@ out/artifacts/bot_jar/bot.jar
 .MF
 *.jar
 logs/*
-start.sh
 data.csv
 src/main/resources/META-INF/MANIFEST.MF
 !.idea/inspectionProfiles/Project_Default.xml
