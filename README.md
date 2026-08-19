@@ -22,6 +22,31 @@ If there is no .env file, try running the bot once. It will proceed to create an
 
 Run the bot using the latest included .jar file in releases or compile the jar yourself from source.
 
+## YouTube Remote Cipher
+
+YouTube signature changes are handled by [yt-cipher](https://github.com/kikkia/yt-cipher), `start.sh` starts yt-cipher and then starts Zenvibe.
+
+Install the service once (this requires Deno):
+
+```bash
+git clone https://github.com/kikkia/yt-cipher.git
+cd yt-cipher
+git checkout ... # branch
+git clone https://github.com/yt-dlp/ejs.git
+cd ejs
+git checkout ... # branch
+cd ..
+deno run --allow-read --allow-write ./scripts/patch-ejs.ts
+```
+
+```dotenv
+YTCIPHERSERVERURL=http://127.0.0.1:8001
+YTCIPHERSERVERPASSWORD=your_secret_password
+YTCIPHERSERVERUSERAGENT=Zenvibe
+```
+
+The password is passed to yt-cipher as its `API_TOKEN`. Leave it blank to without authentication.
+
 ## Spotify Setup
 
 Spotify support uses [Spotify Tokener](https://github.com/topi314/spotify-tokener) for Spotify's anonymous/account web tokens.
