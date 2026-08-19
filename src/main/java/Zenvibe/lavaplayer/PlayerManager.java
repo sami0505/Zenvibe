@@ -69,12 +69,9 @@ public class PlayerManager {
 
         Client[] youtubeClients = new Client[]{
                 new MusicWithThumbnail(),
-                new TvHtml5SimplyWithThumbnail(),
-                new MWebWithThumbnail(),
                 new AndroidVrWithThumbnail(),
                 new WebWithThumbnail(),
-                new WebEmbeddedWithThumbnail(),
-                new Tv()
+                new WebEmbeddedWithThumbnail()
         };
         YoutubeAudioSourceManager youtubeAudioSourceManager = new YoutubeAudioSourceManager(true, youtubeClients);
         youtubeAudioSourceManager.useOauth2(ytRefreshToken, false);
